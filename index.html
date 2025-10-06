@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bursluluk Sınavı Randevu Sistemi</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 20px 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .logo {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .info-note {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:disabled {
+            background-color: #a0a0a0;
+            cursor: not-allowed;
+        }
+        button:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        #statusMessage {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+        }
+        .error {
+            color: #721c24;
+            background-color: #f8d7da;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <img src="https://i.hizliresim.com/6eldhh1.png" alt="Okul Logosu" class="logo">
+
+        <h2>Okul Randevu Sistemi</h2>
+        <form id="appointmentForm">
+            <div class="form-group">
+                <label for="veliAdiSoyadi">Veli Adı Soyadı</label>
+                <input type="text" id="veliAdiSoyadi" name="veliAdiSoyadi" required>
+            </div>
+            <div class="form-group">
+                <label for="ogrenciSinifi">Öğrenci Sınıfı</label>
+                <select id="ogrenciSinifi" name="ogrenciSinifi" required>
+                    <option value="" disabled selected>Lütfen seçiniz...</option>
+                    <option value="4. Sınıf">4. Sınıf</option>
+                    <option value="5. Sınıf">5. Sınıf</option>
+                    <option value="6. Sınıf">6. Sınıf</option>
+                    <option value="7. Sınıf">7. Sınıf</option>
+                    <option value="8. Sınıf">8. Sınıf</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="randevuTarihi">Randevu Tarihi</label>
+                <input type="date" id="randevuTarihi" name="randevuTarihi" required>
+            </div>
+            <div class="form-group">
+                <label for="randevuSaati">Randevu Saati (09:00 - 17:00)</label>
+                <select id="randevuSaati" name="randevuSaati" required disabled>
+                    <option value="">Lütfen önce bir tarih seçin</option>
+                </select>
+            </div>
+            
+            <p class="info-note">
+                Lütfen bilgileri eksiksiz ve doğru girdiğinizden emin olunuz. Randevu değişikliği için okulumuzla iletişime geçebilirsiniz.
+            </p>
+
+            <button type="submit" id="submitButton">Randevu Al</button>
+            <div id="statusMessage"></div>
+        </form>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydH0ADlCYVfoV6I1EDFjxDLmzK6RBmaifG0yng--_EYW4H64s534HyrbBsAR-F4A4/exec';
+
+        const form = document.getElementById('appointmentForm');
+        const dateInput = document.getElementById('randevuTarihi');
+        const timeSelect = document.getElementById('randevuSaati');
+        const statusMessage = document.getElementById('statusMessage');
+        const submitButton = document.getElementById('submitButton');
+        
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+
+        dateInput.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const day = selectedDate.getUTCDay();
+
+            if (day === 0) {
+                timeSelect.innerHTML = '<option value="">Pazar günleri randevu alınamamaktadır.</option>';
+                timeSelect.disabled = true;
+            } else {
+                timeSelect.disabled = false;
+                generateTimeSlots();
+            }
+        });
+
+        function generateTimeSlots() {
+            timeSelect.innerHTML = '';
+            for (let hour = 9; hour < 17; hour++) {
+                const time = `${String(hour).padStart(2, '0')}:00`;
+                const option = document.createElement('option');
+                option.value = time;
+                option.textContent = time;
+                timeSelect.appendChild(option);
+            }
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitButton.disabled = true;
+            submitButton.textContent = 'Gönderiliyor...';
+            statusMessage.textContent = '';
+            statusMessage.className = '';
+
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => data[key] = value);
+
+            const finalData = {
+                "veliAdiSoyadi": data.veliAdiSoyadi,
+                "ogrenciSinifi": data.ogrenciSinifi,
+                "randevuTarihi": data.randevuTarihi,
+                "randevuSaati": data.randevuSaati
+            };
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(finalData),
+                headers: { "Content-Type": "application/json" }
+            })
+            .then(res => {
+                statusMessage.textContent = 'Randevunuz başarıyla alınmıştır. Teşekkür ederiz!';
+                statusMessage.className = 'success';
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                statusMessage.textContent = 'Randevu gönderilirken bir ağ hatası oluştu. Lütfen internet bağlantınızı kontrol edip tekrar deneyin.';
+                statusMessage.className = 'error';
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Randevu Al';
+            });
+        });
+    </script>
+
+</body>
+</html>
