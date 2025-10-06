@@ -111,6 +111,7 @@
                 <label for="ogrenciSinifi">Öğrenci Sınıfı</label>
                 <select id="ogrenciSinifi" name="ogrenciSinifi" required>
                     <option value="" disabled selected>Lütfen seçiniz...</option>
+                    <option value="3. Sınıf">3. Sınıf</option>
                     <option value="4. Sınıf">4. Sınıf</option>
                     <option value="5. Sınıf">5. Sınıf</option>
                     <option value="6. Sınıf">6. Sınıf</option>
@@ -123,7 +124,7 @@
                 <input type="date" id="randevuTarihi" name="randevuTarihi" required>
             </div>
             <div class="form-group">
-                <label for="randevuSaati">Randevu Saati (09:00 - 17:00)</label>
+                <label for="randevuSaati">Randevu Saati</label>
                 <select id="randevuSaati" name="randevuSaati" required disabled>
                     <option value="">Lütfen önce bir tarih seçin</option>
                 </select>
@@ -150,30 +151,81 @@
         const today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute('min', today);
 
-        dateInput.addEventListener('change', function() {
-            const selectedDate = new Date(this.value);
-            const day = selectedDate.getUTCDay();
+        // --- YENİ FONKSİYONLAR ---
 
-            if (day === 0) {
-                timeSelect.innerHTML = '<option value="">Pazar günleri randevu alınamamaktadır.</option>';
+        // Saat aralıklarını oluşturan ve dolu olanları filtreleyen fonksiyon
+        function generateTimeSlots(bookedTimes = []) {
+            timeSelect.innerHTML = ''; 
+            const availableTimes = [];
+
+            // 09:30'dan 17:00'a kadar 30dk aralıklarla saatleri oluştur
+            for (let hour = 9; hour <= 17; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    // Başlangıç saatini (9:30) ve bitiş saatini (17:00) ayarla
+                    if (hour === 9 && minute === 0) continue; 
+                    if (hour === 17 && minute > 0) continue;
+
+                    // Öğle arası: 12:30 ve 13:00 saatlerini atla
+                    if (hour === 12 && minute === 30) continue;
+                    if (hour === 13 && minute === 0) continue;
+
+                    const timeString = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+                    
+                    // Eğer saat dolu değilse listeye ekle
+                    if (!bookedTimes.includes(timeString)) {
+                        availableTimes.push(timeString);
+                    }
+                }
+            }
+
+            if (availableTimes.length === 0) {
+                timeSelect.innerHTML = '<option value="">Bu tarih için uygun saat bulunmamaktadır.</option>';
                 timeSelect.disabled = true;
             } else {
+                availableTimes.forEach(time => {
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.textContent = time;
+                    timeSelect.appendChild(option);
+                });
                 timeSelect.disabled = false;
-                generateTimeSlots();
-            }
-        });
-
-        function generateTimeSlots() {
-            timeSelect.innerHTML = '';
-            for (let hour = 9; hour < 17; hour++) {
-                const time = `${String(hour).padStart(2, '0')}:00`;
-                const option = document.createElement('option');
-                option.value = time;
-                option.textContent = time;
-                timeSelect.appendChild(option);
             }
         }
 
+        // Tarih seçildiğinde çalışan ana fonksiyon
+        dateInput.addEventListener('change', async function() {
+            const selectedDate = new Date(this.value);
+            const day = selectedDate.getUTCDay();
+
+            timeSelect.disabled = true;
+
+            if (day === 0) { // Pazar günü kontrolü
+                timeSelect.innerHTML = '<option value="">Pazar günleri randevu alınamamaktadır.</option>';
+                return;
+            }
+
+            timeSelect.innerHTML = '<option value="">Uygun saatler yükleniyor...</option>';
+
+            try {
+                // Google script'e bağlanıp seçili tarihteki dolu saatleri çek
+                const response = await fetch(`${SCRIPT_URL}?date=${this.value}`);
+                // CORS hatası almamak için eski yöntemdeki no-cors'u burada kullanmıyoruz.
+                // Apps Script'ten gelen cevabı JSON olarak işliyoruz.
+                const data = await response.json();
+
+                if (data.result === 'success') {
+                    generateTimeSlots(data.bookedTimes); // Dolu saatleri göndererek listeyi oluştur
+                } else {
+                    timeSelect.innerHTML = '<option value="">Saatler yüklenemedi.</option>';
+                }
+            } catch (error) {
+                console.error('Saatler çekilirken hata oluştu:', error);
+                timeSelect.innerHTML = '<option value="">Bir hata oluştu, saatler yüklenemedi.</option>';
+            }
+        });
+
+
+        // --- ESKİ FORM GÖNDERME FONKSİYONU ---
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             submitButton.disabled = true;
@@ -185,27 +237,23 @@
             const data = {};
             formData.forEach((value, key) => data[key] = value);
 
-            const finalData = {
-                "veliAdiSoyadi": data.veliAdiSoyadi,
-                "ogrenciSinifi": data.ogrenciSinifi,
-                "randevuTarihi": data.randevuTarihi,
-                "randevuSaati": data.randevuSaati
-            };
-
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
-                body: JSON.stringify(finalData),
+                body: JSON.stringify(data),
                 headers: { "Content-Type": "application/json" }
             })
-            .then(res => {
+            .then(() => {
                 statusMessage.textContent = 'Randevunuz başarıyla alınmıştır. Teşekkür ederiz!';
                 statusMessage.className = 'success';
                 form.reset();
+                // Form sıfırlanınca saat listesini de sıfırla
+                timeSelect.innerHTML = '<option value="">Lütfen önce bir tarih seçin</option>';
+                timeSelect.disabled = true;
             })
             .catch(error => {
                 console.error('Error:', error);
-                statusMessage.textContent = 'Randevu gönderilirken bir ağ hatası oluştu. Lütfen internet bağlantınızı kontrol edip tekrar deneyin.';
+                statusMessage.textContent = 'Randevu gönderilirken bir ağ hatası oluştu.';
                 statusMessage.className = 'error';
             })
             .finally(() => {
