@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bursluluk Sınavı Randevu Sistemi</title>
     <style>
+        /* Stil kodları aynı, değişiklik yok */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 20px 0; }
         .container { background-color: #ffffff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); width: 100%; max-width: 500px; text-align: center; }
         .logo { max-width: 150px; height: auto; margin-bottom: 20px; }
@@ -52,7 +53,7 @@
                 </select>
             </div>
             <p class="info-note">Lütfen bilgileri eksiksiz ve doğru girdiğinizden emin olunuz. Randevu değişikliği için okulumuzla iletişime geçebilirsiniz.</p>
-            <button type="submit" id="submitButton">Randevu Al</button>
+            <button type="submit" id="submitButton" disabled>Randevu Al</button>
             <div id="statusMessage"></div>
         </form>
     </div>
@@ -64,12 +65,12 @@
         const dateInput = document.getElementById('randevuTarihi');
         const timeSelect = document.getElementById('randevuSaati');
         const statusMessage = document.getElementById('statusMessage');
+        const submitButton = document.getElementById('submitButton'); // Butonu başta tanımladık
         
         const today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute('min', today);
 
         function generateTimeSlots(bookedTimes = []) {
-            console.log("Google'dan gelen dolu saatler listesi:", bookedTimes);
             timeSelect.innerHTML = ''; 
             const availableTimes = [];
 
@@ -84,11 +85,10 @@
                 }
             }
             
-            console.log("Ekranda gösterilecek boş saatler:", availableTimes);
-
             if (availableTimes.length === 0) {
                 timeSelect.innerHTML = '<option value="">Bu tarih için uygun saat bulunmamaktadır.</option>';
                 timeSelect.disabled = true;
+                submitButton.disabled = true; // Boş saat yoksa butonu pasif yap
             } else {
                 availableTimes.forEach(time => {
                     const option = document.createElement('option');
@@ -97,6 +97,7 @@
                     timeSelect.appendChild(option);
                 });
                 timeSelect.disabled = false;
+                submitButton.disabled = false; // Boş saat varsa butonu aktif yap
             }
         }
 
@@ -105,14 +106,13 @@
             const selectedDate = new Date(this.value);
             const day = selectedDate.getUTCDay();
             timeSelect.disabled = true;
+            submitButton.disabled = true; // YENİ: Tarih değiştiğinde butonu hemen pasif yap
 
             if (day === 0) {
                 timeSelect.innerHTML = '<option value="">Pazar günleri randevu alınamamaktadır.</option>';
                 return;
             }
             timeSelect.innerHTML = '<option value="">Uygun saatler yükleniyor...</option>';
-            
-            console.log(`Dolu saatler için Google'a soruluyor: Tarih = ${this.value}`);
             
             try {
                 const response = await fetch(`${SCRIPT_URL}?date=${this.value}`);
@@ -121,18 +121,16 @@
                 if (data.result === 'success') {
                     generateTimeSlots(data.bookedTimes);
                 } else {
-                    console.error("Google'dan hata geldi:", data.message);
                     timeSelect.innerHTML = '<option value="">Saatler yüklenemedi.</option>';
                 }
             } catch (error) {
-                console.error('Saatler çekilirken bir ağ hatası oluştu:', error);
                 timeSelect.innerHTML = '<option value="">Bir hata oluştu, saatler yüklenemedi.</option>';
             }
         });
 
+        // Form gönderme fonksiyonu aynı, değişiklik yok
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            const submitButton = document.getElementById('submitButton');
             submitButton.disabled = true;
             submitButton.textContent = 'Gönderiliyor...';
             statusMessage.textContent = '';
@@ -155,13 +153,12 @@
                 timeSelect.disabled = true;
             })
             .catch(error => {
-                console.error('Randevu gönderilirken hata:', error);
                 statusMessage.textContent = 'Randevu gönderilirken bir ağ hatası oluştu.';
                 statusMessage.className = 'error';
             })
             .finally(() => {
-                submitButton.disabled = false;
                 submitButton.textContent = 'Randevu Al';
+                // Butonun disabled durumu, yeni bir tarih seçilene kadar 'true' kalacak. Bu doğru.
             });
         });
     </script>
