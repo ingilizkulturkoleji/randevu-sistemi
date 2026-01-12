@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>İngiliz Kültür Koleji - Bursluluk Sınavı Sonuç Randevu</title>
+<title>İngiliz Kültür Koleji - Bursluluk Sınavı Sonuç Randevu Sistemi</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -116,15 +116,15 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
     
     .note-text { 
         text-align: center; 
-        color: var(--danger); 
+        color: var(--primary); 
         font-size: 0.95rem; 
         font-weight: 600; 
         margin-top: 0; 
         margin-bottom: 30px; 
-        background-color: #fef2f2; 
+        background-color: #e8eaf6; 
         padding: 12px; 
         border-radius: 8px; 
-        border: 1px solid #fee2e2; 
+        border: 1px solid #c5cae9; 
     }
     
     .form-group { 
@@ -373,8 +373,8 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
         </a>
     </div>
     
-    <h2>Erken Kayıt Randevusu</h2>
-    <div class="note-text">Bu alandan sadece kurumumuz öğrencisi olmayan veliler randevu alabilir.</div>
+    <h2>Bursluluk Sınavı Sonuç Randevu Sistemi</h2>
+    <div class="note-text">Bursluluk sınavı sonuçları hakkında görüşmek için randevu alabilirsiniz.</div>
 
     <form id="appointmentForm">
         <div class="form-group"><label>Veli Adı Soyadı</label><input type="text" id="parentName" placeholder="Örn: Ahmet Yılmaz" required></div>
@@ -395,9 +395,9 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
             <label>Görüşme Odası Seçimi</label>
             <div class="rooms-grid">
                 <div class="room-card" id="room-oxford" onclick="selectRoom('oxford')"><h4>Oxford</h4><p>Görüşme Odası 1</p></div>
-                <div class="room-card room-full" id="room-manchester"><h4>Manchester</h4><p>Görüşme Odası 2 (Kapalı)</p></div>
-                <div class="room-card room-full" id="room-liverpool"><h4>Liverpool</h4><p>Görüşme Odası 3 (Kapalı)</p></div>
-                <div class="room-card room-full" id="room-cambridge"><h4>Cambridge</h4><p>Görüşme Odası 4 (Kapalı)</p></div>
+                <div class="room-card" id="room-manchester" onclick="selectRoom('manchester')"><h4>Manchester</h4><p>Görüşme Odası 2</p></div>
+                <div class="room-card" id="room-liverpool" onclick="selectRoom('liverpool')"><h4>Liverpool</h4><p>Görüşme Odası 3</p></div>
+                <div class="room-card" id="room-cambridge" onclick="selectRoom('cambridge')"><h4>Cambridge</h4><p>Görüşme Odası 4</p></div>
             </div>
             <input type="hidden" id="selectedRoom" required>
         </div>
@@ -473,7 +473,8 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
             }
             
             const takenSlots = data.taken || [];
-            const availableHours = ["09:30", "10:30", "11:30", "13:30", "14:30", "15:30", "16:30"];
+            // 9:30'dan 17:30'a kadar saat başı randevu saatleri
+            const availableHours = ["09:30", "10:30", "11:30", "12:30", "13:30", "14:30", "15:30", "16:30", "17:30"];
             
             // Saat butonlarını oluştur
             container.innerHTML = '';
@@ -620,23 +621,22 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
     window.onload = function() {
         generateMathCaptcha();
         const date = new Date();
+        date.setDate(date.getDate() + 1); // Yarından itibaren randevu alınabilsin
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        const todayStr = `${year}-${month}-${day}`;
-        document.getElementById('appointmentDate').setAttribute('min', todayStr);
+        const tomorrowStr = `${year}-${month}-${day}`;
+        document.getElementById('appointmentDate').setAttribute('min', tomorrowStr);
     };
 
     function selectRoom(roomName) {
-        const roomEl = document.getElementById('room-' + roomName);
-        if (roomEl.classList.contains('room-full')) return;
-        
         // Tüm odaların seçimini kaldır
         document.querySelectorAll('.room-card').forEach(c => {
             c.classList.remove('selected');
         });
         
         // Seçili odayı işaretle
+        const roomEl = document.getElementById('room-' + roomName);
         roomEl.classList.add('selected');
         document.getElementById('selectedRoom').value = roomName;
         selectedTime = ''; // Oda değişince saati sıfırla
@@ -654,12 +654,6 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
         
         document.getElementById('selectedRoom').value = '';
         selectedTime = '';
-        
-        // Sadece Oxford aktif, diğerleri kapalı
-        document.getElementById('room-manchester').classList.add('room-full');
-        document.getElementById('room-liverpool').classList.add('room-full');
-        document.getElementById('room-cambridge').classList.add('room-full');
-        document.getElementById('room-oxford').classList.remove('room-full');
         
         const container = document.getElementById('timeButtonsContainer');
         if (dayOfWeek === 0) {
