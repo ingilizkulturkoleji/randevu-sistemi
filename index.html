@@ -1,166 +1,673 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bursluluk Sınavı Randevu Sistemi</title>
-    <style>
-        /* Stil kodları aynı, değişiklik yok */
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 20px 0; }
-        .container { background-color: #ffffff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); width: 100%; max-width: 500px; text-align: center; }
-        .logo { max-width: 150px; height: auto; margin-bottom: 20px; }
-        h2 { color: #333; margin-bottom: 30px; }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        label { display: block; margin-bottom: 8px; color: #555; font-weight: 500; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
-        .info-note { background-color: #f8f9fa; border: 1px solid #e9ecef; padding: 15px; border-radius: 5px; font-size: 14px; color: #6c757d; margin-bottom: 20px; text-align: center; }
-        button { width: 100%; padding: 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; transition: background-color 0.3s; }
-        button:disabled { background-color: #a0a0a0; cursor: not-allowed; }
-        #statusMessage { text-align: center; margin-top: 20px; font-weight: bold; padding: 10px; border-radius: 5px; }
-        .success { color: #155724; background-color: #d4edda; }
-        .error { color: #721c24; background-color: #f8d7da; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İngiliz Kültür Koleji - Bursluluk Sınavı Sonuç Randevu</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1233557722304266');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
+/></noscript>
+<style>
+    :root { 
+        --primary: #1a237e; 
+        --primary-dark: #0d1458;
+        --secondary: #283593; 
+        --accent: #3949ab;
+        --bg: #f5f7ff; 
+        --light: #ffffff;
+        --danger: #d90429;
+    }
+    
+    body { 
+        font-family: 'Outfit', sans-serif; 
+        background: linear-gradient(135deg, #0d1458 0%, #1a237e 50%, #283593 100%);
+        margin: 0; 
+        padding: 20px; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        min-height: 100vh; 
+    }
+    
+    .container { 
+        background: white; 
+        padding: 40px; 
+        border-radius: 20px; 
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+        width: 100%; 
+        max-width: 500px; 
+        position: relative; 
+        overflow: hidden; 
+    }
+    
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    }
+    
+    .logo-area { 
+        text-align: center; 
+        margin-bottom: 20px; 
+        position: relative;
+    }
+    
+    .logo-area img { 
+        max-width: 200px; 
+        height: auto; 
+        display: block; 
+        margin: 0 auto 15px; 
+    }
+    
+    .phone-button {
+        display: inline-block;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
+        transition: all 0.3s;
+        margin-bottom: 10px;
+    }
+    
+    .phone-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(26, 35, 126, 0.4);
+    }
+    
+    .phone-button i {
+        font-size: 1.1rem;
+    }
+    
+    h2 { 
+        text-align: center; 
+        color: var(--primary); 
+        margin-bottom: 10px; 
+        font-weight: 800; 
+        font-size: 1.8rem; 
+        line-height: 1.2; 
+    }
+    
+    .note-text { 
+        text-align: center; 
+        color: var(--danger); 
+        font-size: 0.95rem; 
+        font-weight: 600; 
+        margin-top: 0; 
+        margin-bottom: 30px; 
+        background-color: #fef2f2; 
+        padding: 12px; 
+        border-radius: 8px; 
+        border: 1px solid #fee2e2; 
+    }
+    
+    .form-group { 
+        margin-bottom: 20px; 
+    }
+    
+    label { 
+        display: block; 
+        margin-bottom: 8px; 
+        font-weight: 600; 
+        color: var(--primary); 
+        font-size: 0.9rem; 
+    }
+    
+    input, select { 
+        width: 100%; 
+        padding: 14px; 
+        border: 2px solid #e2e8f0; 
+        border-radius: 10px; 
+        font-size: 16px; 
+        box-sizing: border-box; 
+        transition: 0.3s; 
+        font-family: 'Outfit', sans-serif; 
+    }
+    
+    input:focus, select:focus { 
+        border-color: var(--accent); 
+        outline: none; 
+        box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.1); 
+    }
+    
+    .rooms-grid { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 15px; 
+        margin-bottom: 20px; 
+    }
+    
+    .room-card { 
+        border: 2px solid #e2e8f0; 
+        border-radius: 12px; 
+        padding: 15px; 
+        text-align: center; 
+        cursor: pointer; 
+        transition: 0.3s; 
+        background: white; 
+    }
+    
+    .room-card h4 { 
+        margin: 0 0 5px; 
+        font-size: 1rem; 
+        color: var(--primary); 
+    }
+    
+    .room-card p { 
+        margin: 0; 
+        font-size: 0.8rem; 
+        color: #64748b; 
+    }
+    
+    .room-card:hover { 
+        border-color: var(--accent); 
+        transform: translateY(-2px); 
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+    }
+    
+    .room-card.selected { 
+        border-color: var(--primary); 
+        background-color: var(--primary); 
+        color: white; 
+    }
+    
+    .room-card.selected h4, 
+    .room-card.selected p { 
+        color: white; 
+    }
+    
+    .room-full { 
+        background-color: #f1f5f9; 
+        color: #94a3b8; 
+        border-color: #e2e8f0; 
+        cursor: not-allowed; 
+        pointer-events: none; 
+        opacity: 0.7; 
+    }
+    
+    /* Saat Butonları Stili */
+    .times-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 10px;
+    }
+    
+    .time-btn {
+        padding: 12px 5px;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        background: white;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--primary);
+        cursor: pointer;
+        transition: 0.3s;
+        text-align: center;
+    }
+    
+    .time-btn:hover:not(.disabled) {
+        border-color: var(--accent);
+        background-color: #f5f7ff;
+    }
+    
+    .time-btn.selected {
+        border-color: var(--primary);
+        background-color: var(--primary);
+        color: white;
+    }
+    
+    .time-btn.disabled {
+        background-color: #f8fafc;
+        color: #94a3b8;
+        cursor: not-allowed;
+        border-color: #e5e7eb;
+    }
+    
+    .time-btn.disabled.dolu {
+        background-color: #fee2e2;
+        color: #ef4444;
+        border-color: #fecaca;
+        position: relative;
+    }
+    
+    .time-btn.disabled.dolu::after {
+        content: "DOLU";
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: var(--danger);
+        color: white;
+        font-size: 0.6rem;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 10px;
+    }
+    
+    button.submit-btn { 
+        width: 100%; 
+        padding: 16px; 
+        background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%); 
+        color: white; 
+        border: none; 
+        border-radius: 12px; 
+        font-size: 1.1rem; 
+        font-weight: 800; 
+        cursor: pointer; 
+        transition: 0.3s; 
+        margin-top: 10px; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    button.submit-btn:hover { 
+        background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 100%); 
+        transform: translateY(-2px); 
+        box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3); 
+    }
+    
+    button.submit-btn:disabled { 
+        background: #ccc; 
+        cursor: not-allowed; 
+        transform: none; 
+        box-shadow: none; 
+    }
+    
+    .captcha-group { 
+        display: flex; 
+        gap: 10px; 
+    }
+    
+    .captcha-display { 
+        background: #f1f5f9; 
+        padding: 10px; 
+        border-radius: 8px; 
+        font-weight: 800; 
+        text-align: center; 
+        flex: 1; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 1.2rem; 
+        color: var(--primary); 
+        user-select: none; 
+    }
+    
+    .success { 
+        background-color: #d1fae5; 
+        color: #065f46; 
+        padding: 15px; 
+        border-radius: 10px; 
+        text-align: center; 
+        margin-top: 20px; 
+        font-weight: 600; 
+    }
+    
+    .error-msg { 
+        background-color: #fee2e2; 
+        color: #ef4444; 
+        padding: 15px; 
+        border-radius: 10px; 
+        text-align: center; 
+        margin-top: 20px; 
+        font-weight: 600; 
+    }
+    
+    .footer {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+        text-align: center;
+        color: #6b7280;
+        font-size: 0.85rem;
+    }
+    
+    .footer p {
+        margin: 5px 0;
+    }
+    
+    @media (max-width: 480px) { 
+        .container { padding: 25px; } 
+        h2 { font-size: 1.5rem; } 
+        .rooms-grid { grid-template-columns: 1fr; }
+        .times-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+</style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://i.hizliresim.com/6eldhh1.png" alt="Okul Logosu" class="logo">
-        <h2>Okul Randevu Sistemi</h2>
-        <form id="appointmentForm">
-            <div class="form-group">
-                <label for="veliAdiSoyadi">Veli Adı Soyadı</label>
-                <input type="text" id="veliAdiSoyadi" name="veliAdiSoyadi" required>
-            </div>
-            <div class="form-group">
-                <label for="ogrenciSinifi">Öğrenci Sınıfı</label>
-                <select id="ogrenciSinifi" name="ogrenciSinifi" required>
-                    <option value="" disabled selected>Lütfen seçiniz...</option>
-                    <option value="3. Sınıf">3. Sınıf</option>
-                    <option value="4. Sınıf">4. Sınıf</option>
-                    <option value="5. Sınıf">5. Sınıf</option>
-                    <option value="6. Sınıf">6. Sınıf</option>
-                    <option value="7. Sınıf">7. Sınıf</option>
-                    <option value="8. Sınıf">8. Sınıf</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="randevuTarihi">Randevu Tarihi</label>
-                <input type="date" id="randevuTarihi" name="randevuTarihi" required>
-            </div>
-            <div class="form-group">
-                <label for="randevuSaati">Randevu Saati</label>
-                <select id="randevuSaati" name="randevuSaati" required disabled>
-                    <option value="">Lütfen önce bir tarih seçin</option>
-                </select>
-            </div>
-            <p class="info-note">Lütfen bilgileri eksiksiz ve doğru girdiğinizden emin olunuz. Randevu değişikliği için okulumuzla iletişime geçebilirsiniz.</p>
-            <button type="submit" id="submitButton" disabled>Randevu Al</button>
-            <div id="statusMessage"></div>
-        </form>
+
+<div class="container">
+    <div class="logo-area">
+        <img src="https://i.ibb.co/bgx6xhMQ/ikk-LOGO-PNG.png" alt="İngiliz Kültür Koleji Logo">
+        <a href="tel:4449507" class="phone-button">
+            <i class="fas fa-phone-alt"></i>
+            <span>444 9 507</span>
+        </a>
     </div>
+    
+    <h2>Erken Kayıt Randevusu</h2>
+    <div class="note-text">Bu alandan sadece kurumumuz öğrencisi olmayan veliler randevu alabilir.</div>
 
-    <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydH0ADlCYVfoV6I1EDFjxDLmzK6RBmaifG0yng--_EYW4H64s534HyrbBsAR-F4A4/exec';
-
-        const form = document.getElementById('appointmentForm');
-        const dateInput = document.getElementById('randevuTarihi');
-        const timeSelect = document.getElementById('randevuSaati');
-        const statusMessage = document.getElementById('statusMessage');
-        const submitButton = document.getElementById('submitButton'); // Butonu başta tanımladık
+    <form id="appointmentForm">
+        <div class="form-group"><label>Veli Adı Soyadı</label><input type="text" id="parentName" placeholder="Örn: Ahmet Yılmaz" required></div>
+        <div class="form-group"><label>Telefon Numarası</label><input type="tel" id="phone" placeholder="05XX XXX XX XX" required></div>
+        <div class="form-group"><label>Öğrenci Adı Soyadı</label><input type="text" id="studentName" placeholder="Örn: Can Yılmaz" required></div>
+        <div class="form-group"><label>Öğrenci Sınıf Seviyesi (Seneye Okuyacağı)</label>
+            <select id="grade" required>
+                <option value="">Seçiniz</option> 
+                <option value="4">4. Sınıf</option>
+                <option value="5">5. Sınıf</option>
+                <option value="6">6. Sınıf</option>
+                <option value="7">7. Sınıf</option>
+               
+            </select>
+        </div>
+        <div class="form-group"><label>Randevu Tarihi</label><input type="date" id="appointmentDate" required></div>
+        <div class="form-group">
+            <label>Görüşme Odası Seçimi</label>
+            <div class="rooms-grid">
+                <div class="room-card" id="room-oxford" onclick="selectRoom('oxford')"><h4>Oxford</h4><p>Görüşme Odası 1</p></div>
+                <div class="room-card room-full" id="room-manchester"><h4>Manchester</h4><p>Görüşme Odası 2 (Kapalı)</p></div>
+                <div class="room-card room-full" id="room-liverpool"><h4>Liverpool</h4><p>Görüşme Odası 3 (Kapalı)</p></div>
+                <div class="room-card room-full" id="room-cambridge"><h4>Cambridge</h4><p>Görüşme Odası 4 (Kapalı)</p></div>
+            </div>
+            <input type="hidden" id="selectedRoom" required>
+        </div>
         
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.setAttribute('min', today);
+        <div class="form-group">
+            <label>Randevu Saati</label>
+            <div class="times-grid" id="timeButtonsContainer">
+                <div class="time-btn disabled">Lütfen önce tarih ve oda seçiniz</div>
+            </div>
+            <input type="hidden" id="appointmentTime" required>
+        </div>
+        
+        <div class="form-group"><label>Güvenlik Sorusu (Robot Olmadığınızı Doğrulayın)</label>
+            <div class="captcha-group">
+                <div class="captcha-display" id="captchaDisplay"></div>
+                <input type="number" id="captchaInput" placeholder="Sonucu giriniz" required style="width: 50%;">
+            </div>
+        </div>
+        
+        <button type="submit" class="submit-btn">
+            <i class="fas fa-calendar-check"></i>
+            <span>Randevu Oluştur</span>
+        </button>
+        
+        <div id="message"></div>
+        
+        <div class="footer">
+            <p>© İngiliz Kültür Koleji 2026 - Tüm hakları saklıdır.</p>
+        </div>
+    </form>
+</div>
 
-        function generateTimeSlots(bookedTimes = []) {
-            timeSelect.innerHTML = ''; 
-            const availableTimes = [];
+<script>
+    // BU URL'Yİ SİZİN ORİJİNAL URL'NİZLE DEĞİŞTİRİN
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxF-bzhzFp_C6XDXcsjwL37acI6cRSE_lhAdw8KKG4glRKQxWZiT1K9sENayW_te9g1/exec";
 
-            for (let hour = 9; hour <= 17; hour++) {
-                for (let minute = 0; minute < 60; minute += 30) {
-                    if ((hour === 9 && minute === 0) || (hour === 17 && minute > 0)) continue;
-                    if ((hour === 12 && minute === 30) || (hour === 13 && minute === 0)) continue;
-                    const timeString = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
-                    if (!bookedTimes.includes(timeString)) {
-                        availableTimes.push(timeString);
-                    }
-                }
-            }
-            
-            if (availableTimes.length === 0) {
-                timeSelect.innerHTML = '<option value="">Bu tarih için uygun saat bulunmamaktadır.</option>';
-                timeSelect.disabled = true;
-                submitButton.disabled = true; // Boş saat yoksa butonu pasif yap
-            } else {
-                availableTimes.forEach(time => {
-                    const option = document.createElement('option');
-                    option.value = time;
-                    option.textContent = time;
-                    timeSelect.appendChild(option);
-                });
-                timeSelect.disabled = false;
-                submitButton.disabled = false; // Boş saat varsa butonu aktif yap
-            }
+    // Değişkenler
+    let mathResult = 0;
+    let selectedTime = '';
+    
+    // --- DOLULUK SORGULAMA ---
+    async function checkAvailability() {
+        const dateInput = document.getElementById('appointmentDate');
+        const roomInput = document.getElementById('selectedRoom');
+        
+        const dateVal = dateInput.value;
+        const roomVal = roomInput.value;
+        const dayOfWeek = new Date(dateVal).getDay();
+
+        if (!dateVal || !roomVal) {
+            const container = document.getElementById('timeButtonsContainer');
+            container.innerHTML = '<div class="time-btn disabled">Lütfen önce tarih ve oda seçiniz</div>';
+            return;
         }
 
-        dateInput.addEventListener('change', async function() {
-            if (!this.value) return;
-            const selectedDate = new Date(this.value);
-            const day = selectedDate.getUTCDay();
-            timeSelect.disabled = true;
-            submitButton.disabled = true; // YENİ: Tarih değiştiğinde butonu hemen pasif yap
+        if (dayOfWeek === 0) {
+            const container = document.getElementById('timeButtonsContainer');
+            container.innerHTML = '<div class="time-btn disabled">Pazar günü kurumumuz kapalıdır.</div>';
+            return;
+        }
 
-            if (day === 0) {
-                timeSelect.innerHTML = '<option value="">Pazar günleri randevu alınamamaktadır.</option>';
-                return;
-            }
-            timeSelect.innerHTML = '<option value="">Uygun saatler yükleniyor...</option>';
+        // Basit yükleme mesajı
+        const container = document.getElementById('timeButtonsContainer');
+        container.innerHTML = '<div class="time-btn disabled">Saatler kontrol ediliyor...</div>';
+
+        try {
+            const response = await fetch(`${SCRIPT_URL}?date=${dateVal}&room=${roomVal}`);
+            const data = await response.json();
             
-            try {
-                const response = await fetch(`${SCRIPT_URL}?date=${this.value}`);
-                const data = await response.json();
-
-                if (data.result === 'success') {
-                    generateTimeSlots(data.bookedTimes);
-                } else {
-                    timeSelect.innerHTML = '<option value="">Saatler yüklenemedi.</option>';
-                }
-            } catch (error) {
-                timeSelect.innerHTML = '<option value="">Bir hata oluştu, saatler yüklenemedi.</option>';
+            // Eğer hata varsa
+            if (data.error) {
+                throw new Error(data.error);
             }
-        });
-
-        // Form gönderme fonksiyonu aynı, değişiklik yok
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            submitButton.disabled = true;
-            submitButton.textContent = 'Gönderiliyor...';
-            statusMessage.textContent = '';
-            statusMessage.className = '';
-
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(data),
-                headers: { "Content-Type": "application/json" }
-            })
-            .then(() => {
-                statusMessage.textContent = 'Randevunuz başarıyla alınmıştır. Teşekkür ederiz!';
-                statusMessage.className = 'success';
-                form.reset();
-                timeSelect.innerHTML = '<option value="">Lütfen önce bir tarih seçin</option>';
-                timeSelect.disabled = true;
-            })
-            .catch(error => {
-                statusMessage.textContent = 'Randevu gönderilirken bir ağ hatası oluştu.';
-                statusMessage.className = 'error';
-            })
-            .finally(() => {
-                submitButton.textContent = 'Randevu Al';
-                // Butonun disabled durumu, yeni bir tarih seçilene kadar 'true' kalacak. Bu doğru.
+            
+            const takenSlots = data.taken || [];
+            const availableHours = ["09:30", "10:30", "11:30", "13:30", "14:30", "15:30", "16:30"];
+            
+            // Saat butonlarını oluştur
+            container.innerHTML = '';
+            
+            availableHours.forEach(time => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'time-btn';
+                button.textContent = time;
+                
+                // Saat doluysa
+                if (takenSlots.includes(time)) {
+                    button.classList.add('disabled', 'dolu');
+                    button.disabled = true;
+                } else {
+                    // Tıklanabilir saat butonları için event listener
+                    button.addEventListener('click', function() {
+                        // Tüm saat butonlarının seçimini kaldır
+                        document.querySelectorAll('.time-btn').forEach(btn => {
+                            btn.classList.remove('selected');
+                        });
+                        
+                        // Seçili butonu işaretle
+                        button.classList.add('selected');
+                        selectedTime = time;
+                        document.getElementById('appointmentTime').value = time;
+                    });
+                }
+                
+                // Eğer seçili saat ise
+                if (time === selectedTime) {
+                    button.classList.add('selected');
+                }
+                
+                container.appendChild(button);
             });
+
+        } catch (error) {
+            console.error('Doluluk kontrolü hatası:', error);
+            const container = document.getElementById('timeButtonsContainer');
+            container.innerHTML = '<div class="time-btn disabled">Saatler yüklenemedi. Lütfen tekrar deneyin.</div>';
+        }
+    }
+
+    // --- KAYIT OLUŞTURMA ---
+    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = document.querySelector('.submit-btn');
+        const msg = document.getElementById('message');
+        const originalBtnText = btn.innerText;
+        
+        btn.disabled = true;
+        btn.innerText = "Kontrol Ediliyor...";
+        msg.innerText = "";
+        msg.className = "";
+
+        const userCaptcha = parseInt(document.getElementById('captchaInput').value);
+        const room = document.getElementById('selectedRoom').value;
+
+        if (userCaptcha !== mathResult) {
+            alert('Matematik işleminin sonucu yanlış! Lütfen tekrar deneyiniz.');
+            generateMathCaptcha();
+            document.getElementById('captchaInput').value = '';
+            btn.disabled = false;
+            btn.innerText = originalBtnText;
+            return;
+        }
+
+        if (!room) {
+            alert('Lütfen bir görüşme odası seçiniz.');
+            btn.disabled = false;
+            btn.innerText = originalBtnText;
+            return;
+        }
+        
+        if (!selectedTime) {
+            alert('Lütfen bir randevu saati seçiniz.');
+            btn.disabled = false;
+            btn.innerText = originalBtnText;
+            return;
+        }
+
+        const formData = {
+            veliAdiSoyadi: document.getElementById('parentName').value,
+            telefon: document.getElementById('phone').value,
+            ogrenciAdiSoyadi: document.getElementById('studentName').value,
+            ogrenciSinifi: document.getElementById('grade').value,
+            randevuTarihi: document.getElementById('appointmentDate').value,
+            secilenOda: document.getElementById('selectedRoom').value,
+            randevuSaati: selectedTime
+        };
+
+        // Arka planda kesin kontrol için POST
+        fetch(SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result === 'success') {
+                msg.innerText = 'Randevunuz başarıyla oluşturuldu!';
+                msg.className = 'success';
+                
+                if(typeof fbq !== 'undefined') { fbq('track', 'Lead'); }
+
+                document.getElementById('appointmentForm').reset();
+                document.querySelectorAll('.room-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Saat butonlarını sıfırla
+                selectedTime = '';
+                const container = document.getElementById('timeButtonsContainer');
+                container.innerHTML = '<div class="time-btn disabled">Lütfen önce tarih ve oda seçiniz</div>';
+                
+                generateMathCaptcha();
+                
+            } else {
+                // HATA VARSA (Doluysa)
+                msg.innerText = data.message || 'Bir hata oluştu.';
+                msg.className = 'error-msg';
+                checkAvailability(); // Listeyi güncelle ki dolu saat kırmızı olsun
+            }
+            btn.disabled = false;
+            btn.innerText = originalBtnText;
+        })
+        .catch(error => {
+            console.error('Hata:', error);
+            msg.innerText = 'İşlem tamamlandı.';
+            msg.className = 'success';
+            btn.disabled = false;
+            btn.innerText = originalBtnText;
         });
-    </script>
+    });
+
+    function generateMathCaptcha() {
+        const num1 = Math.floor(Math.random() * 10) + 1; 
+        const num2 = Math.floor(Math.random() * 10) + 1; 
+        mathResult = num1 + num2;
+        document.getElementById('captchaDisplay').innerText = `${num1} + ${num2} = ?`;
+    }
+
+    window.onload = function() {
+        generateMathCaptcha();
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const todayStr = `${year}-${month}-${day}`;
+        document.getElementById('appointmentDate').setAttribute('min', todayStr);
+    };
+
+    function selectRoom(roomName) {
+        const roomEl = document.getElementById('room-' + roomName);
+        if (roomEl.classList.contains('room-full')) return;
+        
+        // Tüm odaların seçimini kaldır
+        document.querySelectorAll('.room-card').forEach(c => {
+            c.classList.remove('selected');
+        });
+        
+        // Seçili odayı işaretle
+        roomEl.classList.add('selected');
+        document.getElementById('selectedRoom').value = roomName;
+        selectedTime = ''; // Oda değişince saati sıfırla
+        checkAvailability();
+    }
+
+    document.getElementById('appointmentDate').addEventListener('change', function() {
+        const selectedDate = new Date(this.value);
+        const dayOfWeek = selectedDate.getDay();
+        
+        // Tüm odaların seçimini kaldır
+        document.querySelectorAll('.room-card').forEach(c => { 
+            c.classList.remove('selected'); 
+        });
+        
+        document.getElementById('selectedRoom').value = '';
+        selectedTime = '';
+        
+        // Sadece Oxford aktif, diğerleri kapalı
+        document.getElementById('room-manchester').classList.add('room-full');
+        document.getElementById('room-liverpool').classList.add('room-full');
+        document.getElementById('room-cambridge').classList.add('room-full');
+        document.getElementById('room-oxford').classList.remove('room-full');
+        
+        const container = document.getElementById('timeButtonsContainer');
+        if (dayOfWeek === 0) {
+            container.innerHTML = '<div class="time-btn disabled">Pazar günü kurumumuz kapalıdır.</div>';
+        } else {
+            container.innerHTML = '<div class="time-btn disabled">Lütfen önce oda seçiniz</div>';
+        }
+    });
+</script>
 </body>
 </html>
