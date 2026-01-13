@@ -24,18 +24,18 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
 /></noscript>
 <style>
     :root { 
-        --primary: #1a237e; 
-        --primary-dark: #0d1458;
-        --secondary: #283593; 
-        --accent: #3949ab;
-        --bg: #f5f7ff; 
+        --primary: #b71c1c; 
+        --primary-dark: #7f0000;
+        --secondary: #c62828; 
+        --accent: #d32f2f;
+        --bg: #fff5f5; 
         --light: #ffffff;
         --danger: #d90429;
     }
     
     body { 
         font-family: 'Outfit', sans-serif; 
-        background: linear-gradient(135deg, #0d1458 0%, #1a237e 50%, #283593 100%);
+        background: linear-gradient(135deg, #7f0000 0%, #b71c1c 50%, #d32f2f 100%);
         margin: 0; 
         padding: 20px; 
         display: flex; 
@@ -50,7 +50,7 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
         border-radius: 20px; 
         box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
         width: 100%; 
-        max-width: 500px; 
+        max-width: 550px; 
         position: relative; 
         overflow: hidden; 
     }
@@ -91,14 +91,14 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
         align-items: center;
         justify-content: center;
         gap: 10px;
-        box-shadow: 0 4px 12px rgba(26, 35, 126, 0.3);
+        box-shadow: 0 4px 12px rgba(183, 28, 28, 0.3);
         transition: all 0.3s;
         margin-bottom: 10px;
     }
     
     .phone-button:hover {
         transform: translateY(-3px);
-        box-shadow: 0 6px 16px rgba(26, 35, 126, 0.4);
+        box-shadow: 0 6px 16px rgba(183, 28, 28, 0.4);
     }
     
     .phone-button i {
@@ -121,10 +121,10 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
         font-weight: 600; 
         margin-top: 0; 
         margin-bottom: 30px; 
-        background-color: #e8eaf6; 
+        background-color: #ffebee; 
         padding: 12px; 
         border-radius: 8px; 
-        border: 1px solid #c5cae9; 
+        border: 1px solid #ffcdd2; 
     }
     
     .form-group { 
@@ -153,7 +153,7 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
     input:focus, select:focus { 
         border-color: var(--accent); 
         outline: none; 
-        box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.1); 
+        box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1); 
     }
     
     .rooms-grid { 
@@ -214,17 +214,17 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
     /* Saat Butonları Stili */
     .times-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
         margin-top: 10px;
     }
     
     .time-btn {
-        padding: 12px 5px;
+        padding: 10px 5px;
         border: 2px solid #e2e8f0;
         border-radius: 8px;
         background: white;
-        font-size: 0.95rem;
+        font-size: 0.85rem;
         font-weight: 600;
         color: var(--primary);
         cursor: pointer;
@@ -234,7 +234,7 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
     
     .time-btn:hover:not(.disabled) {
         border-color: var(--accent);
-        background-color: #f5f7ff;
+        background-color: #fff5f5;
     }
     
     .time-btn.selected {
@@ -251,23 +251,23 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
     }
     
     .time-btn.disabled.dolu {
-        background-color: #fee2e2;
+        background-color: #ffeaea;
         color: #ef4444;
-        border-color: #fecaca;
+        border-color: #ffcaca;
         position: relative;
     }
     
     .time-btn.disabled.dolu::after {
         content: "DOLU";
         position: absolute;
-        top: -8px;
-        right: -8px;
+        top: -6px;
+        right: -6px;
         background-color: var(--danger);
         color: white;
-        font-size: 0.6rem;
+        font-size: 0.5rem;
         font-weight: 700;
-        padding: 2px 6px;
-        border-radius: 10px;
+        padding: 2px 5px;
+        border-radius: 8px;
     }
     
     button.submit-btn { 
@@ -291,7 +291,7 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
     button.submit-btn:hover { 
         background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 100%); 
         transform: translateY(-2px); 
-        box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3); 
+        box-shadow: 0 5px 15px rgba(183, 28, 28, 0.3); 
     }
     
     button.submit-btn:disabled { 
@@ -332,7 +332,7 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
     }
     
     .error-msg { 
-        background-color: #fee2e2; 
+        background-color: #ffeaea; 
         color: #ef4444; 
         padding: 15px; 
         border-radius: 10px; 
@@ -358,6 +358,10 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
         .container { padding: 25px; } 
         h2 { font-size: 1.5rem; } 
         .rooms-grid { grid-template-columns: 1fr; }
+        .times-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    
+    @media (max-width: 360px) { 
         .times-grid { grid-template-columns: repeat(2, 1fr); }
     }
 </style>
@@ -380,12 +384,13 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
         <div class="form-group"><label>Veli Adı Soyadı</label><input type="text" id="parentName" placeholder="Örn: Ahmet Yılmaz" required></div>
         <div class="form-group"><label>Telefon Numarası</label><input type="tel" id="phone" placeholder="05XX XXX XX XX" required></div>
         <div class="form-group"><label>Öğrenci Adı Soyadı</label><input type="text" id="studentName" placeholder="Örn: Can Yılmaz" required></div>
-        <div class="form-group"><label>Öğrenci Sınıf Seviyesi (Şimdiki)</label>
+        <div class="form-group"><label>Öğrenci Sınıf Seviyesi (Seneye Okuyacağı)</label>
             <select id="grade" required>
                 <option value="">Seçiniz</option> 
                 <option value="4">4. Sınıf</option>
-             
-               
+                <option value="5">5. Sınıf</option>
+                <option value="6">6. Sınıf</option>
+                <option value="7">7. Sınıf</option>
                
             </select>
         </div>
@@ -393,7 +398,7 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
         <div class="form-group">
             <label>Görüşme Odası Seçimi</label>
             <div class="rooms-grid">
-                <div class="room-card" id="room-oxford" onclick="selectRoom('oxford')"><h4>Oxford</h4><p>Görüşme Odası 1</p></div>
+                <div class="room-card room-full" id="room-oxford"><h4>Oxford</h4><p>Görüşme Odası 1 (Kapalı)</p></div>
                 <div class="room-card" id="room-manchester" onclick="selectRoom('manchester')"><h4>Manchester</h4><p>Görüşme Odası 2</p></div>
                 <div class="room-card" id="room-liverpool" onclick="selectRoom('liverpool')"><h4>Liverpool</h4><p>Görüşme Odası 3</p></div>
                 <div class="room-card" id="room-cambridge" onclick="selectRoom('cambridge')"><h4>Cambridge</h4><p>Görüşme Odası 4</p></div>
@@ -472,8 +477,18 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
             }
             
             const takenSlots = data.taken || [];
-            // 9:30'dan 17:30'a kadar saat başı randevu saatleri
-            const availableHours = ["09:30", "10:30", "11:30", "12:30", "13:30", "14:30", "15:30", "16:30", "17:30"];
+            // 15 dakika aralıklarla saatler
+            const availableHours = [
+                "09:15", "09:30", "09:45",
+                "10:00", "10:15", "10:30", "10:45",
+                "11:00", "11:15", "11:30", "11:45",
+                "12:00", "12:15", "12:30",
+                "13:30", "13:45",
+                "14:00", "14:15", "14:30", "14:45",
+                "15:00", "15:15", "15:30", "15:45",
+                "16:00", "16:15", "16:30", "16:45",
+                "17:00"
+            ];
             
             // Saat butonlarını oluştur
             container.innerHTML = '';
