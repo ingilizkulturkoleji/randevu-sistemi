@@ -565,6 +565,17 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
             return;
         }
 
+        // 1 Şubat 2026 ve sonrasını kontrol et (1 Şubat DAHİL DEĞİL)
+        const selectedDate = new Date(appointmentDate);
+        const maxDate = new Date('2026-01-31'); // 31 Ocak 2026 en son tarih
+        
+        if (selectedDate > maxDate) {
+            alert('Randevu sistemi şu anda sadece 31 Ocak 2026 tarihine kadar hizmet vermektedir.');
+            btn.disabled = false;
+            btn.innerText = originalBtnText;
+            return;
+        }
+
         if (userCaptcha !== mathResult) {
             alert('Matematik işleminin sonucu yanlış! Lütfen tekrar deneyiniz.');
             generateMathCaptcha();
@@ -657,10 +668,24 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
         const day = String(date.getDate()).padStart(2, '0');
         const tomorrowStr = `${year}-${month}-${day}`;
         const dateInput = document.getElementById('appointmentDate');
+        
+        // Minimum tarih (yarın)
         dateInput.setAttribute('min', tomorrowStr);
         
-        // 17 Ocak 2026'yı input'tan engellemek için max değeri de ayarlayalım
-        // Sadece 17 Ocak özel durum, diğer günler normal
+        // MAKSİMUM TARİH: 31 Ocak 2026 (1 Şubat DAHİL DEĞİL)
+        dateInput.setAttribute('max', '2026-01-31');
+        
+        // Tarih değiştiğinde 1 Şubat ve sonrasını kontrol et
+        dateInput.addEventListener('input', function() {
+            const selectedDate = new Date(this.value);
+            const maxDate = new Date('2026-01-31');
+            
+            if (selectedDate > maxDate) {
+                alert('Randevu sistemi şu anda sadece 31 Ocak 2026 tarihine kadar hizmet vermektedir.');
+                this.value = '2026-01-31'; // Otomatik olarak max tarihe ayarla
+                checkAvailability();
+            }
+        });
     };
 
     function selectRoom(roomName) {
@@ -694,6 +719,15 @@ src="https://www.facebook.com/tr?id=1233557722304266&ev=PageView&noscript=1"
         // 17 Ocak 2026 tarihini kontrol et
         if (selectedDate === '2026-01-17') {
             container.innerHTML = '<div class="time-btn disabled">17 Ocak 2026 Cumartesi günü kurumumuz kapalıdır.</div>';
+            return;
+        }
+        
+        // 1 Şubat 2026 ve sonrasını kontrol et
+        const dateObj = new Date(selectedDate);
+        const maxDate = new Date('2026-01-31');
+        
+        if (dateObj > maxDate) {
+            container.innerHTML = '<div class="time-btn disabled">31 Ocak 2026 tarihinden sonra randevu alınamamaktadır.</div>';
             return;
         }
         
